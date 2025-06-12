@@ -1,8 +1,10 @@
-const axios = require("axios");
-const API_KEY = "3f66110531694da3b94ea712d96d21ce";
+import axios from "axios";
+
+
+const API_KEY = process.env.NEWS_API_KEY; 
 
 const BASE_URL = "https://newsapi.org/v2";
-// const NEWS_API_URL = "https://newsapi.org/v2/top-headlines?country=us&category=general&apiKey=3f66110531694da3b94ea712d96d21ce";
+// const NEWS_API_URL = "https://newsapi.org/v2/top-headlines?country=us&category=general&apiKey=${API_KEY}";
 
 //Fetching top headlines
 const getTopHeadlines = async (country = "us", category = "general") => {
@@ -21,6 +23,4 @@ const getTopHeadlines = async (country = "us", category = "general") => {
   }
 };
 
-module.exports = {
-  getTopHeadlines,
-};
+export default getTopHeadlines;

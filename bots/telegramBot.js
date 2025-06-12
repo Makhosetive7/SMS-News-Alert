@@ -1,12 +1,14 @@
-const TelegramBot = require("node-telegram-bot-api");
-const {
-  scrapeBBCNews,
+import TelegramBot from "node-telegram-bot-api";
+import {
   scrapeCNNHealth,
+  scrapeBBCNews,
   scrapeTechCrunch,
-} = require("../services/newsScrapping");
+} from "../services/newsScrapping.js";
+
+import users from "../models/users.js";
 
 function startTelegramBot() {
-  const token = "7959085816:AAFjf_oir8wsH3wYwoxxirQEolNF7yih5Fo"; 
+  const token = "7959085816:AAFjf_oir8wsH3wYwoxxirQEolNF7yih5Fo";
   const bot = new TelegramBot(token, { polling: true });
 
   bot.onText(/\/start/, (msg) => {
@@ -46,16 +48,44 @@ function startTelegramBot() {
       }
 
       articles.slice(0, 5).forEach((article) => {
-        bot.sendMessage(chatId, `📰 *${article.title}*\n[Read more](${article.link})`, {
-          parse_mode: "Markdown",
-        });
+        bot.sendMessage(
+          chatId,
+          `📰 *${article.title}*\n[Read more](${article.link})`,
+          {
+            parse_mode: "Markdown",
+          }
+        );
       });
     } catch (err) {
       console.error("Bot error:", err.message);
       bot.sendMessage(chatId, "⚠️ Failed to fetch news.");
     }
   });
+
+  bot.on("message", async (msg) => {
+    const chatId = msg.chat.id;
+    const command = msg.text;
+
+    try {
+      // Check if user exists in the database
+      let user = await users.findOne({ TelegramId: chatId });
+
+      if (!user) {
+        // Create a new user if not found
+        user = new users({
+          TelegramId: msg.from.id,
+          username: msg.from.username || "Unknown",
+          command: command,
+        });
+        await user.save();
+      } else {
+        user.command = command;
+        await user.save();
+      }
+    } catch (err) {
+      console.error("Database error:", err.message);
+    }
+  });
 }
 
-
-module.exports = startTelegramBot;
+export { startTelegramBot };

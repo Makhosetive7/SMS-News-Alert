@@ -1,6 +1,6 @@
-const axios = require("axios");
-const cheerio = require("cheerio");
-const puppeteer = require("puppeteer");
+import axios from "axios";
+import puppeteer from "puppeteer";
+
 
 // BBC Tech
 const scrapeBBCNews = async () => {
@@ -94,8 +94,4 @@ const scrapeTechCrunch = async () => {
   }
 };
 
-module.exports = {
-  scrapeBBCNews,
-  scrapeCNNHealth,
-  scrapeTechCrunch,
-};
+export { scrapeBBCNews, scrapeCNNHealth, scrapeTechCrunch };

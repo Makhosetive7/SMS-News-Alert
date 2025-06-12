@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import  getTopHeadlines  from '../../services/newsAPI.js';
+
 const router = express.Router();
-const { getTopHeadlines } = require('../../services/newsAPI');
 
 router.get('/top-headlines', async (req, res) => {
   const { country = 'us', category = 'general' } = req.query;
@@ -12,7 +13,6 @@ router.get('/top-headlines', async (req, res) => {
     console.error('Error fetching top headlines:', error);
     res.status(500).json({ error: 'Failed to fetch top headlines' });
   }
-}
-);
+});
 
-module.exports = router;
+export default router;

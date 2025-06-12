@@ -1,11 +1,8 @@
-const express = require("express");
+import express from "express";
+import { scrapeBBCNews, scrapeCNNHealth, scrapeTechCrunch } from "../../services/newsScrapping.js";
+
 const router = express.Router();
 
-const {
-  scrapeBBCNews,
-  scrapeCNNHealth,
-  scrapeTechCrunch,
-} = require("../../services/newsScrapping");
 
 router.get("/scrapedNews", async (req, res) => {
   try {
@@ -21,4 +18,4 @@ router.get("/scrapedNews", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
