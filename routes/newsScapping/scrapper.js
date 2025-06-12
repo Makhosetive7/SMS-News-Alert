@@ -15,7 +15,7 @@ router.get("/scrapedNews", async (req, res) => {
       scrapeTechCrunch(),
     ]);
 
-    res.json([...bbc, ...cnn, ...techcrunch]);
+    res.json([...(bbc || []), ...(cnn || []), ...(techcrunch || [])]);
   } catch (error) {
     res.status(500).json({ error: "Failed to scrape news from sources." });
   }
