@@ -14,9 +14,26 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    required: false,
+    enum: ["BBCNews", "CNNHealth", "TechCrunch"],
+  },
+  role: {
+    type: String,
+    required: false,
+    enum: ["admin", "user"],
+    default: "user",
+  },
+  totalArticlesRead: {
+    type: Number,
+    default: 0, 
+    required: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
+    required: false,
   },
 });
 

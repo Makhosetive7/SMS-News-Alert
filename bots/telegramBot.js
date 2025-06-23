@@ -1,9 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
-import {
-  scrapeCNNHealth,
-  scrapeBBCNews,
-  scrapeTechCrunch,
-} from "../services/newsScrapping.js";
+import { scrapeBBCNews } from "../services/NewsScrapping/BBCNews.js";
+import { scrapeBBCNewsSport } from "../services/NewsScrapping/BBCSport.js";
+import { scrapeBBCNewsInnovation } from "../services/NewsScrapping/BBCInnovation.js";
 
 import users from "../models/users.js";
 
@@ -17,9 +15,9 @@ function startTelegramBot() {
     bot.sendMessage(chatId, "Choose a news source:", {
       reply_markup: {
         inline_keyboard: [
-          [{ text: "1. BBC News", callback_data: "bbc" }],
-          [{ text: "2. CNN Health", callback_data: "cnn" }],
-          [{ text: "3. TechCrunch", callback_data: "techcrunch" }],
+          [{ text: "1. BBC News", callback_data: "news" }],
+          [{ text: "2. BBC Sport", callback_data: "sports" }],
+          [{ text: "3. BBC Innovation", callback_data: "innovation" }],
         ],
       },
     });
@@ -34,14 +32,14 @@ function startTelegramBot() {
     try {
       let articles;
       switch (selection) {
-        case "bbc":
+        case "news":
           articles = await scrapeBBCNews();
           break;
-        case "cnn":
-          articles = await scrapeCNNHealth();
+        case "sport":
+          articles = await scrapeBBCNewsSport();
           break;
-        case "techcrunch":
-          articles = await scrapeTechCrunch();
+        case "innovation":
+          articles = await scrapeBBCNewsInnovation();
           break;
         default:
           return bot.sendMessage(chatId, "Invalid selection.");

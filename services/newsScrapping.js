@@ -1,97 +1,121 @@
-import axios from "axios";
-import puppeteer from "puppeteer";
+import puppeteer from 'puppeteer';
 
-
-// BBC Tech
-const scrapeBBCNews = async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+export const scrapeBBCNews = async () => {
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   
-  await page.goto('https://www.bbc.com/news', { waitUntil: 'networkidle2' });
-
-  const articles = await page.$$eval(
-    '[data-testid^="london-card"], [data-testid^="dundee-card"], [data-testid^="manchester-card"], [data-testid^="liverpool-card"]',
-    (cards) => cards.map(card => {
-      const getText = (selector) => 
-        card.querySelector(selector)?.textContent.trim() || null;
-      
-      const getAttr = (selector, attr) =>
-        card.querySelector(selector)?.getAttribute(attr) || null;
-
-      return {
-        title: getText('[data-testid="card-headline"]'),
-        description: getText('[data-testid="card-description"]'),
-        url: getAttr('a[data-testid="internal-link"]', 'href'),
-        timestamp: getText('[data-testid="card-metadata-lastupdated"]'),
-        category: getText('[data-testid="card-metadata-tag"]'),
-        image: getAttr('[data-testid="card-media"] img', 'src'),
-        hasVideo: !!card.querySelector('[data-testid="content-type-icon-wrapper"]')
-      };
-    })
-  );
-
-  await browser.close();
-  return articles.filter(a => a.title && a.url);
-};
-
-// CNN Health
-const scrapeCNNHealth = async () => {
-  let browser;
   try {
-    browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto("https://edition.cnn.com/health", {
-      waitUntil: "networkidle2",
-    });
+    await page.goto('https://www.bbc.com/news', { waitUntil: 'networkidle2' });
 
-    const articles = await page.evaluate(() => {
-      return Array.from(document.querySelectorAll("h3.cd__headline")).map(
-        (el) => ({
-          source: "CNN",
-          category: "Health",
-          title: el.innerText,
-          link: el.querySelector("a").href,
-        })
-      );
-    });
-    return articles.slice(0, 10);
+    const articles = await page.$$eval(
+      '[data-testid^="london-card"], [data-testid^="dundee-card"], [data-testid^="manchester-card"], [data-testid^="liverpool-card"]',
+      (cards) => cards.map(card => {
+        const getText = (selector) => 
+          card.querySelector(selector)?.textContent.trim() || null;
+        
+        const getAttr = (selector, attr) =>
+          card.querySelector(selector)?.getAttribute(attr) || null;
+
+        return {
+          title: getText('[data-testid="card-headline"]'),
+          description: getText('[data-testid="card-description"]'),
+          url: getAttr('a[data-testid="internal-link"]', 'href'),
+          timestamp: getText('[data-testid="card-metadata-lastupdated"]'),
+          category: getText('[data-testid="card-metadata-tag"]'),
+          image: getAttr('[data-testid="card-media"] img', 'src'),
+          hasVideo: !!card.querySelector('[data-testid="content-type-icon-wrapper"]')
+        };
+      })
+    );
+    
+    return articles.filter(a => a.title && a.url);
   } catch (error) {
-    console.error("Error scraping CNN Health:", error.message);
+    console.error('BBC News scraping error:', error);
+    return [];
   } finally {
-    if (browser) {
-      await browser.close();
-    }
+    await browser.close();
   }
 };
 
-// TechCrunch Startups
-const scrapeTechCrunch = async () => {
-  let browser;
-  try {
-    browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto("https://techcrunch.com/startups/", {
-      waitUntil: "networkidle2",
-    });
+export const scrapeBBCNewsInnovation = async () => {
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
 
-    const articles = await page.evaluate(() => {
-      return Array.from(document.querySelectorAll("h2.post-block__title")).map(
-        (el) => ({
-          source: "TechCrunch",
-          category: "Startups",
-          title: el.innerText,
-          link: el.querySelector("a").href,
-        })
-      );
-    });
-    return articles.slice(0, 10);
+  try {
+    const page = await browser.newPage();
+    await page.goto("https://www.bbc.com/innovation", { waitUntil: "networkidle2" });
+
+    const articles = await page.$$eval(
+      '[data-testid^="london-card"], [data-testid^="dundee-card"], [data-testid^="manchester-card"], [data-testid^="liverpool-card"]',
+      (cards) => cards.map((card) => {
+        const getText = (selector) =>
+          card.querySelector(selector)?.textContent.trim() || null;
+
+        const getAttr = (selector, attr) =>
+          card.querySelector(selector)?.getAttribute(attr) || null;
+
+        return {
+          title: getText('[data-testid="card-headline"]'),
+          description: getText('[data-testid="card-description"]'),
+          url: getAttr('a[data-testid="internal-link"]', "href"),
+          timestamp: getText('[data-testid="card-metadata-lastupdated"]'),
+          category: getText('[data-testid="card-metadata-tag"]'),
+          image: getAttr('[data-testid="card-media"] img', "src"),
+          hasVideo: !!card.querySelector('[data-testid="content-type-icon-wrapper"]')
+        };
+      })
+    );
+
+    return articles.filter((a) => a.title && a.url);
   } catch (error) {
-    console.error("Error scraping TechCrunch:", error.message);
+    console.error('BBC Innovation scraping error:', error);
+    return [];
   } finally {
-    if (browser) {
-      await browser.close();
-    }
+    await browser.close();
   }
 };
 
-export { scrapeBBCNews, scrapeCNNHealth, scrapeTechCrunch };
+export const scrapeBBCNewsSport = async () => {
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+
+  try {
+    const page = await browser.newPage();
+    await page.goto("https://www.bbc.com/sport", { waitUntil: "networkidle2" });
+
+    const articles = await page.$$eval(
+      '[data-testid^="london-card"], [data-testid^="dundee-card"], [data-testid^="manchester-card"], [data-testid^="liverpool-card"]',
+      (cards) => cards.map((card) => {
+        const getText = (selector) =>
+          card.querySelector(selector)?.textContent.trim() || null;
+
+        const getAttr = (selector, attr) =>
+          card.querySelector(selector)?.getAttribute(attr) || null;
+
+        return {
+          title: getText('[data-testid="card-headline"]'),
+          description: getText('[data-testid="card-description"]'),
+          url: getAttr('a[data-testid="internal-link"]', "href"),
+          timestamp: getText('[data-testid="card-metadata-lastupdated"]'),
+          category: getText('[data-testid="card-metadata-tag"]'),
+          image: getAttr('[data-testid="card-media"] img', "src"),
+          hasVideo: !!card.querySelector('[data-testid="content-type-icon-wrapper"]')
+        };
+      })
+    );
+
+    return articles.filter((a) => a.title && a.url);
+  } catch (error) {
+    console.error('BBC Sport scraping error:', error);
+    return [];
+  } finally {
+    await browser.close();
+  }
+};
