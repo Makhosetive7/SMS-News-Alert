@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const articlesReadSchema = new mongoose.Schema({
+const savedArticleSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
@@ -13,13 +13,7 @@ const articlesReadSchema = new mongoose.Schema({
   },
   url: {
     type: String,
-    required: false,
-    trim: true,
-  },
-  category: {
-    type: String,
-    enum: ["news", "sports", "innovation"],
-    required: false,
+    required: true,
   },
   source: {
     type: String,
@@ -39,22 +33,19 @@ const articlesReadSchema = new mongoose.Schema({
       "Arts",
       "Health",
       "Science",
-      "sport",
         "Politics",
       "Glasgow & West Scotland`",
+      "sport",
       "Travel",
     ],
     required: false,
   },
-  readTime: {
-    type: Date,
-    default: Date.now,
+  category: {
+    type: String,
+    enum: ["news", "sports", "innovation"],
+    required: false,
   },
-
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  savedAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("articlesRead", articlesReadSchema);
+export default mongoose.model("savedArticles", savedArticleSchema);

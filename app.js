@@ -5,6 +5,7 @@ import newsScrappingRoutes from "./routes/newsScapping/scrapper.js";
 import innovationRouter from "./routes/newsScapping/BBCInnovation.js";
 import sportRoute from "./routes/newsScapping/BBCSport.js";
 import newsRouter from "./routes/newsScapping/BBCNews.js";
+import analyticsRoute from "./routes/analytics/analytics.js"
 import { startTelegramBot } from "./bots/telegramBot.js";
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
@@ -22,6 +23,7 @@ app.use("/api/scrape", newsScrappingRoutes);
 app.use("/api/scrape/innovation", innovationRouter);
 app.use("/api/scrape/sport", sportRoute);
 app.use("/api/scrape/news", newsRouter);
+app.use("/api/analytics", analyticsRoute);
 
 connectDB().then(() => {
   const PORT = process.env.PORT || 5000;

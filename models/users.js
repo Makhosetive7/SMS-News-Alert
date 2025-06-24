@@ -1,6 +1,5 @@
 // models/User.js
 import mongoose from "mongoose";
-import { commandSchema } from "./commandSchema.js";
 
 const userSchema = new mongoose.Schema({
   TelegramId: {

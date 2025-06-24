@@ -1,4 +1,3 @@
-
 import puppeteer from "puppeteer";
 
 // BBC News Home
