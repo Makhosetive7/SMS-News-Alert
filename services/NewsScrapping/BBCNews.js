@@ -22,6 +22,7 @@ export const scrapeBBCNews = async () => {
           title: getText('[data-testid="card-headline"]'),
           description: getText('[data-testid="card-description"]'),
           url: getAttr('a[data-testid="internal-link"]', "href"),
+          source: getText('[data-testid="card-metadata-tag"]'),
           timestamp: getText('[data-testid="card-metadata-lastupdated"]'),
           category: getText('[data-testid="card-metadata-tag"]'),
           image: getAttr('[data-testid="card-media"] img', "src"),
