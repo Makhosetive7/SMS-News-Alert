@@ -7,7 +7,7 @@ import { scrapeFullArticle } from "../services/NewsScrapping/FullArticle.js";
 import users from "../models/users.js";
 
 function startTelegramBot() {
-  const token = "7959085816:AAFjf_oir8wsH3wYwoxxirQEolNF7yih5Fo";
+  const token =  process.env.TELEGRAM_BOT_TOKEN;
   const bot = new TelegramBot(token, { polling: true });
 
   bot.onText(/\/start/, (msg) => {
