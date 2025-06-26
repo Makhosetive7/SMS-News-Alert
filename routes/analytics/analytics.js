@@ -11,11 +11,13 @@ import {
   getTopCommands,
   getUserSavedArticles,
 } from "../../services/Analytics/userAnalysisLogger.js";
+import adminUser from "../adminUserRoutes/adminUser.js"
+import {adminAuthMiddleware} from "../../middleWare/authMiddleware.js"
 
 const router = express.Router();
 
 //Top 5 Most Read Articles
-router.get("/top-read", async (req, res) => {
+router.get("/top-read", adminAuthMiddleware, async (req, res) => {
   try {
     const data = await getTopReadArticles();
     res.json(data);
@@ -25,7 +27,7 @@ router.get("/top-read", async (req, res) => {
 });
 
 //Top 5 Most Saved Articles
-router.get("/top-saved", async (req, res) => {
+router.get("/top-saved", adminAuthMiddleware, async (req, res) => {
   try {
     const data = await getTopSavedArticles();
     res.json(data);
@@ -35,7 +37,7 @@ router.get("/top-saved", async (req, res) => {
 });
 
 //Top 5 Categories
-router.get("/top-categories", async (req, res) => {
+router.get("/top-categories",adminAuthMiddleware, async (req, res) => {
   try {
     const data = await getTopSavedCategories();
     res.json(data);
@@ -45,7 +47,7 @@ router.get("/top-categories", async (req, res) => {
 });
 
 //Top 5 Sources
-router.get("/top-sources", async (req, res) => {
+router.get("/top-sources",adminAuthMiddleware, async (req, res) => {
   try {
     const data = await getTopSavedSources();
     res.json(data);
@@ -55,7 +57,7 @@ router.get("/top-sources", async (req, res) => {
 });
 
 //Top 5 Active Users
-router.get("/top-users", async (req, res) => {
+router.get("/top-users", adminAuthMiddleware,async (req, res) => {
   try {
     const data = await getTopActiveUsers();
     res.json(data);
@@ -65,7 +67,7 @@ router.get("/top-users", async (req, res) => {
 });
 
 //Top Commands Used
-router.get("/top-commands", async (req, res) => {
+router.get("/top-commands",adminAuthMiddleware,  async (req, res) => {
   try {
     const data = await getTopCommands();
     res.json(data);
@@ -75,7 +77,7 @@ router.get("/top-commands", async (req, res) => {
 });
 
 //Get a User's Saved Articles
-router.get("/user-saved/:userId", async (req, res) => {
+router.get("/user-saved/:userId",adminAuthMiddleware, async (req, res) => {
   try {
     const userId = req.params.userId;
     const data = await getUserSavedArticles(userId);

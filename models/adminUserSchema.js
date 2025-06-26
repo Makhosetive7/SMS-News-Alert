@@ -21,7 +21,7 @@ const adminUseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: { type: String, enum: ["admin", "superadmin"], default: "admin" },
+  role: { type: String, enum: ["admin", "reader"], default: "admin" },
   createdAt: { type: Date, default: Date.now },
 });
 
