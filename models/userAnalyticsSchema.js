@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userAnalyticsSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "telegramUser", required: true },
   eventType: {
     type: String,
     enum: ["article_read", "article_saved", "command_used"],
