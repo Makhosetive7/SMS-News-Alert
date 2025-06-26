@@ -1,7 +1,7 @@
 // models/User.js
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const telegramUsersSchema = new mongoose.Schema({
   TelegramId: {
     type: String,
     required: true,
@@ -17,9 +17,10 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "user"],
-    default: "user",
+    enum: ["admin", "telegramUser"],
+    default: "telegramUser",
   },
+  
   totalArticlesRead: {
     type: Number,
     default: 0,
@@ -30,4 +31,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model("telegramUser", telegramUsersSchema);

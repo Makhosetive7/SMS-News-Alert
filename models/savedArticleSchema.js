@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const savedArticleSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "telegramUser",
     required: true,
   },
   title: {

@@ -4,7 +4,7 @@ import { scrapeBBCNewsSport } from "../services/NewsScrapping/BBCSport.js";
 import { scrapeBBCNewsInnovation } from "../services/NewsScrapping/BBCInnovation.js";
 import { scrapeFullArticle } from "../services/NewsScrapping/FullArticle.js";
 
-import users from "../models/users.js";
+import telegramUser from "../models/telegramUsersSchema.js";
 import articlesRead from "../models/articlesReadSchema.js";
 import savedArticles from "../models/savedArticleSchema.js";
 
@@ -128,7 +128,7 @@ function startTelegramBot() {
             inline_keyboard: [
               [
                 {
-                  text: "💾 Save Article",
+                  text: "💾Save Article",
                   callback_data: `save_${articleId}`,
                 },
               ],
@@ -139,7 +139,7 @@ function startTelegramBot() {
 
       // Save article read info to DB
       try {
-        const user = await users.findOne({ TelegramId: chatId });
+        const user = await telegramUser.findOne({ TelegramId: chatId });
         if (!user) {
           console.error("User not found in database.");
           return;
@@ -182,7 +182,7 @@ function startTelegramBot() {
       }
 
       try {
-        const user = await users.findOne({ TelegramId: chatId });
+        const user = await telegramUser.findOne({ TelegramId: chatId });
         if (!user) {
           return bot.sendMessage(chatId, "User not found in the system.");
         }
@@ -222,7 +222,7 @@ function startTelegramBot() {
     const command = msg.text;
 
     try {
-      let user = await users.findOne({ TelegramId: chatId });
+      let user = await telegramUser.findOne({ TelegramId: chatId });
 
       const commandEntry = {
         command: command,
@@ -231,7 +231,7 @@ function startTelegramBot() {
       };
 
       if (!user) {
-        user = new users({
+        user = new telegramUser({
           TelegramId: msg.from.id,
           username: msg.from.username || "Unknown",
           commands: [commandEntry],
@@ -255,7 +255,7 @@ function startTelegramBot() {
     const chatId = msg.chat.id;
 
     try {
-      const user = await users.findOne({ TelegramId: chatId });
+      const user = await telegramUser.findOne({ TelegramId: chatId });
 
       if (!user) {
         return bot.sendMessage(chatId, "User not found in the database.");
@@ -294,7 +294,7 @@ function startTelegramBot() {
     const chatId = msg.chat.id;
 
     try {
-      const user = await users.findOne({ TelegramId: chatId });
+      const user = await telegramUser.findOne({ TelegramId: chatId });
 
       if (!user) {
         return bot.sendMessage(chatId, "User not found in the database.");
